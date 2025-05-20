@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shoe Showcase</title>
+  <style>
+    * body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e3e9f1 100%);
+  color: #333;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+header {
+  background-color: #1a1a1a;
+  padding: 1.5rem 2rem 0.75rem;
+  text-align: center;
+  color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  font-weight: 600;
+  letter-spacing: 1.1px;
+}
+
+header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 2.75rem;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ff6f61;
+}
+
+header .tagline {
+  font-size: 1.25rem;
+  margin: 0.2rem 0 0.5rem;
+  background-color: rgba(255, 111, 97, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-style: italic;
+  color: #ff6f61;
+  display: inline-block;
+}
+
+nav {
+  background-color: #222;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  border-bottom: 2px solid #ff6f61;
+}
+
+nav a {
+  color: #f9f9f9;
+  text-decoration: none;
+  margin: 0 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ff6f61;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #ff6f61;
+  left: 0;
+  bottom: 0;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+.hero {
+  background: url('https://images.unsplash.com/photo-1585386959984-a41552263f80?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
+  margin-top: -30px;
+  border-radius: 0 0 25px 25px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+.shoe-section {
+  padding: 1.5rem 2rem;
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.shoe-card {
+  width: 100%;
+  max-width: 300px;
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  flex: 1 1 calc(33% - 2rem);
+}
+
+.shoe-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(255, 111, 97, 0.4);
+}
+
+.shoe-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 2px solid #ff6f61;
+  transition: transform 0.3s ease;
+}
+
+.shoe-card:hover img {
+  transform: scale(1.08);
+}
+
+.shoe-card .info {
+  padding: 1rem;
+  display: none;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(255, 111, 97, 0.8);
+  z-index: 1000;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  border-radius: 20px;
+  animation: fadeInScale 0.3s ease forwards;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.popup img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1.2rem;
+  border-radius: 10px;
+  border: 2px solid #ff6f61;
+}
+
+.popup h3 {
+  margin-bottom: 0.8rem;
+  color: #ff6f61;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.popup p {
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.popup button {
+  padding: 0.5rem 1.5rem;
+  background: #ff6f61;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 111, 97, 0.6);
+  transition: background 0.3s ease;
+}
+
+.popup button:hover {
+  background: #e5564f;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: opacity 0.3s ease;
+}
+
+footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+}
+
+  </style>
+  <script>
+    function showSection(sectionId) {
+      document.querySelectorAll('.shoe-section').forEach(section => section.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'flex';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.shoe-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const img = card.querySelector('img').src;
+          const title = card.querySelector('h3').textContent;
+          const desc = card.querySelector('p').textContent;
+          document.getElementById('popup-img').src = img;
+          document.getElementById('popup-title').textContent = title;
+          document.getElementById('popup-desc').textContent = desc;
+          document.querySelector('.popup').style.display = 'block';
+          document.querySelector('.overlay').style.display = 'block';
+        });
+      });
+
+      document.getElementById('close-popup').addEventListener('click', () => {
+        document.querySelector('.popup').style.display = 'none';
+        document.querySelector('.overlay').style.display = 'none';
+      });
+    });
+  </script>
+</head>
+<body>
+
+  <header>
+    <h1>Shoe Showcase</h1>
+    <p class="tagline">Step Into Style</p>
+    <p>Discover stylish and comfortable shoes for every occasion. From sporty sneakers to elegant dress shoes, find the perfect pair that suits your lifestyle.</p>
+  </header>
+
+  <nav>
+    <a onclick="showSection('home')">Home</a>
+    <a onclick="showSection('men')">Men</a>
+    <a onclick="showSection('women')">Women</a>
+    <a onclick="showSection('contact')">Contact</a>
+  </nav>
+
+  <div class="hero"></div>
+
+  <div class="overlay"></div>
+  <div class="popup">
+    <img id="popup-img" src="" alt="Shoe">
+    <h3 id="popup-title"></h3>
+    <p id="popup-desc"></p>
+    <button id="close-popup">Back</button>
+  </div>
+  <section id="home" class="shoe-section" style="display: flex;">
+    <div class="shoe-card">
+      <img src="running.jpg" alt="Running Shoes">
+      <div class="info">
+        <h3>Running Shoes</h3>
+        <p>Comfort and performance combined for jogging and workouts. These shoes provide superior cushioning, breathability, and traction to support your runs on various terrains.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="casual.jpg" alt="Casual Sneakers">
+      <div class="info">
+        <h3>Casual Sneakers</h3>
+        <p>Trendy and versatile shoes for daily use. Whether you're heading to class or meeting friends, these sneakers combine fashion and function for everyday wear.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="men" class="shoe-section">
+    <div class="shoe-card">
+      <img src="men.jpg" alt="Men's Sneakers">
+      <div class="info">
+        <h3>Men's Sneakers</h3>
+        <p>Perfect for casual wear with style and comfort. Lightweight materials and flexible soles make these sneakers a top choice for active lifestyles.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="boots1.jpg" alt="Men's Boots">
+      <div class="info">
+        <h3>Men's Boots</h3>
+        <p>Durable boots for outdoor adventures and rugged looks. Built with sturdy leather and reinforced soles, they're made to withstand rough conditions.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="dress.jpg" alt="Men's Dress Shoes">
+      <div class="info">
+        <h3>Men's Dress Shoes</h3>
+        <p>Elegant leather shoes for formal occasions. Crafted with precision, they add a sophisticated touch to your outfit for business or events.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="train.jpg" alt="Men's Trainers">
+      <div class="info">
+        <h3>Men's Trainers</h3>
+        <p>Ideal for gym workouts and sports training. Designed for agility, they offer enhanced grip, stability, and foot support during high-intensity activities.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="slip.jpg" alt="Men's Slip-ons">
+      <div class="info">
+        <h3>Men's Slip-ons</h3>
+        <p>Easy-to-wear shoes for everyday use. Their sleek, no-lace design provides a convenient option without sacrificing style or comfort.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="women" class="shoe-section">
+    <div class="shoe-card">
+      <img src="flatss.jpg" alt="Women's Flats">
+      <div class="info">
+        <h3>Women's Flats</h3>
+        <p>Comfortable and stylish flat shoes for daily wear. These flats are ideal for work or casual outings, offering support without the heel height.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="heels.jpg" alt="Women's Heels">
+      <div class="info">
+        <h3>Women's Heels</h3>
+        <p>Chic heels to elevate your look for any event. Available in various heights and designs, they enhance your silhouette while remaining comfortable.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="sandals.jpg" alt="Women's Sandals">
+      <div class="info">
+        <h3>Women's Sandals</h3>
+        <p>Perfect for summer outings and casual strolls. These sandals offer airy comfort with elegant straps for a stylish warm-weather look.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="sneakers.jpg" alt="Women's Sneakers">
+      <div class="info">
+        <h3>Women's Sneakers</h3>
+        <p>Comfortable sneakers for active and everyday life. Supportive midsoles and stylish uppers make these shoes great for fitness and errands alike.</p>
+      </div>
+    </div>
+    <div class="shoe-card">
+      <img src="boots.jpg" alt="Women's Boots">
+      <div class="info">
+        <h3>Women's Boots</h3>
+        <p>Stylish boots that blend fashion with warmth. Whether ankle or knee-high, they're designed to keep your feet cozy and fashionable.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="shoe-section">
+    <div class="shoe-card">
+      <div class="info" style="display: block;">
+        <h3>Contact Us</h3>
+        <p>Email: support@shoeshowcase.com<br>Phone: +123 456 7890</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Shoe Showcase. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
